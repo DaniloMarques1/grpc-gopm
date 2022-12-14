@@ -6,6 +6,7 @@ service Password {
     rpc SavePassword(CreatePasswordRequest) returns (CreatePasswordResponse) {} 
     rpc FindAllKeys(Empty) returns (Keys) {}
     rpc FindPassword(FindPasswordRequest) returns (PasswordResponse) {}
+    rpc DeletePassword(DeletePasswordRequest) returns (DeletePasswordResponse) {}
 }
 
 message Empty {
@@ -17,6 +18,10 @@ message CreatePasswordRequest {
 }
 
 message CreatePasswordResponse {
+    bool OK = 1;
+}
+
+message DeletePasswordResponse {
     bool OK = 1;
 }
 
@@ -32,4 +37,8 @@ message PasswordResponse {
     string id = 1;
     string key = 2;
     string password = 3;
+}
+
+message DeletePasswordRequest {
+    string key = 1;
 }

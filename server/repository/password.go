@@ -70,3 +70,18 @@ func (p *PasswordRepositoryImpl) FindPassword(key string) (*model.Password, erro
 	}
 	return password, nil
 }
+
+func (p *PasswordRepositoryImpl) Delete(key string) error {
+	stmt, err := p.db.Prepare(`
+		DELETE FROM passwords where key = $1;
+	`)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	if _, err := stmt.Exec(key); err != nil {
+		return err
+	}
+	return nil
+}

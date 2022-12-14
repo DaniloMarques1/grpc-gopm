@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS passwords(
 `
 
 func main() {
-	db, err := sql.Open("sqlite3", "databse.sql")
+	db, err := sql.Open("sqlite3", "db.sql")
 	if err != nil {
 		log.Fatal(err)
 	}

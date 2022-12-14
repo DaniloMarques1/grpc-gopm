@@ -61,3 +61,12 @@ func (s *PasswordServer) FindPassword(ctx context.Context, in *pb.FindPasswordRe
 
 	return response, nil
 }
+
+func (s *PasswordServer) DeletePassword(ctx context.Context, in *pb.DeletePasswordRequest) (*pb.DeletePasswordResponse, error) {
+	if err := s.repository.Delete(in.GetKey()); err != nil {
+		return nil, err
+	}
+	return &pb.DeletePasswordResponse{
+		OK: true,
+	}, nil
+}
