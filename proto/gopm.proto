@@ -5,6 +5,7 @@ option go_package = "./pb";
 service Password {
     rpc SavePassword(CreatePasswordRequest) returns (CreatePasswordResponse) {} 
     rpc FindAllKeys(Empty) returns (Keys) {}
+    rpc FindPassword(FindPasswordRequest) returns (PasswordResponse) {}
 }
 
 message Empty {
@@ -19,6 +20,16 @@ message CreatePasswordResponse {
     bool OK = 1;
 }
 
+message FindPasswordRequest {
+    string key = 1;
+}
+
 message Keys {
     repeated string keys = 1;
+}
+
+message PasswordResponse {
+    string id = 1;
+    string key = 2;
+    string password = 3;
 }

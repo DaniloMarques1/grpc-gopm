@@ -15,7 +15,7 @@ import (
 const TABLES = `
 CREATE TABLE IF NOT EXISTS passwords(
 	id varchar(40) primary key,
-	key varchar(100) not null,
+	key varchar(100) not null unique,
 	password varchar(100) not null
 );
 `

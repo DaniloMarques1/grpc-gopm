@@ -9,4 +9,5 @@ type Password struct {
 type PasswordRepository interface {
 	Save(*Password) error
 	FindAllKeys() ([]string, error)
+	FindPassword(string) (*Password, error)
 }

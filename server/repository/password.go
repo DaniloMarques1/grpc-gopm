@@ -54,3 +54,19 @@ func (p *PasswordRepositoryImpl) FindAllKeys() ([]string, error) {
 
 	return keys, nil
 }
+
+func (p *PasswordRepositoryImpl) FindPassword(key string) (*model.Password, error) {
+	stmt, err := p.db.Prepare(`
+		SELECT id, key, password FROM passwords WHERE key = $1;
+	`)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	password := &model.Password{}
+	if err := stmt.QueryRow(key).Scan(&password.Id, &password.Key, &password.Pwd); err != nil {
+		return nil, err
+	}
+	return password, nil
+}
