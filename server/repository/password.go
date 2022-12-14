@@ -85,3 +85,18 @@ func (p *PasswordRepositoryImpl) Delete(key string) error {
 	}
 	return nil
 }
+
+func (p *PasswordRepositoryImpl) Update(password *model.Password) error {
+	stmt, err := p.db.Prepare(`
+		UPDATE passwords SET key = $1, password = $2 WHERE id = $3;
+	`)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	if _, err := stmt.Exec(password.Key, password.Pwd, password.Id); err != nil {
+		return err
+	}
+	return nil
+}

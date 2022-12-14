@@ -15,7 +15,7 @@ func main() {
 		log.Fatal(err)
 	}
 	defer conn.Close()
-	
+
 	client := pb.NewPasswordClient(conn)
 	cli := cli.NewCli(client)
 	cli.Shell()

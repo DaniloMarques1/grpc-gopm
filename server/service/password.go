@@ -32,7 +32,6 @@ func (s *PasswordServer) SavePassword(ctx context.Context, in *pb.CreatePassword
 		return nil, err
 	}
 
-
 	return &pb.CreatePasswordResponse{OK: true}, nil
 }
 
@@ -54,8 +53,8 @@ func (s *PasswordServer) FindPassword(ctx context.Context, in *pb.FindPasswordRe
 		return nil, err
 	}
 	response := &pb.PasswordResponse{
-		Id: password.Id,
-		Key: password.Key,
+		Id:       password.Id,
+		Key:      password.Key,
 		Password: password.Pwd,
 	}
 
@@ -69,4 +68,20 @@ func (s *PasswordServer) DeletePassword(ctx context.Context, in *pb.DeletePasswo
 	return &pb.DeletePasswordResponse{
 		OK: true,
 	}, nil
+}
+
+func (s *PasswordServer) UpdatePassword(ctx context.Context, in *pb.UpdatePasswordRequest) (*pb.UpdatePasswordResponse, error) {
+	password, err := s.repository.FindPassword(in.GetKey())
+	if err != nil {
+		return nil, errors.New("Key not found")
+	}
+
+	password.Key = in.GetKey()
+	password.Pwd = in.GetPassword()
+
+	if err := s.repository.Update(password); err != nil {
+		return nil, err
+	}
+
+	return &pb.UpdatePasswordResponse{OK: true}, nil
 }

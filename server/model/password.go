@@ -11,4 +11,5 @@ type PasswordRepository interface {
 	FindAllKeys() ([]string, error)
 	FindPassword(string) (*Password, error)
 	Delete(string) error
+	Update(*Password) error
 }

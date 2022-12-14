@@ -14,16 +14,17 @@ import (
 )
 
 const (
-	SAVE = "save"
-	FIND = "find"
-	KEYS = "keys"
+	SAVE   = "save"
+	FIND   = "find"
+	KEYS   = "keys"
 	DELETE = "delete"
-	CLEAR = "clear"
+	UPDATE = "update"
+	CLEAR  = "clear"
 )
 
 type Cli struct {
 	passwordClient pb.PasswordClient
-	scanner *bufio.Scanner
+	scanner        *bufio.Scanner
 }
 
 func NewCli(client pb.PasswordClient) *Cli {
@@ -53,7 +54,7 @@ func (c *Cli) Shell() {
 			}
 			key, pwd := args[0], args[1]
 			req := &pb.CreatePasswordRequest{
-				Key: key,
+				Key:      key,
 				Password: pwd,
 			}
 			response, err := c.passwordClient.SavePassword(context.Background(), req)
@@ -83,7 +84,7 @@ func (c *Cli) Shell() {
 				continue
 			}
 			key := args[0]
-			req := &pb.FindPasswordRequest{Key : key}
+			req := &pb.FindPasswordRequest{Key: key}
 			response, err := c.passwordClient.FindPassword(context.Background(), req)
 			if err != nil {
 				fmt.Printf("ERROR: %v", err)
@@ -109,6 +110,24 @@ func (c *Cli) Shell() {
 				continue
 			}
 			fmt.Println("Password removed successfully")
+		case UPDATE:
+			args := strings.Split(arg, " ")
+			if len(args) != 2 {
+				fmt.Println("Wrong number of arguments")
+				continue
+			}
+			key, pwd := args[0], args[1]
+			req := &pb.UpdatePasswordRequest{Key: key, Password: pwd}
+			response, err := c.passwordClient.UpdatePassword(context.Background(), req)
+			if err != nil {
+				fmt.Printf("ERROR: %v", err)
+				continue
+			}
+			if !response.GetOK() {
+				fmt.Println("Could not update the password")
+				continue
+			}
+			fmt.Println("Password updated successfully")
 		case CLEAR:
 			operatingSystem := runtime.GOOS
 			switch operatingSystem {
