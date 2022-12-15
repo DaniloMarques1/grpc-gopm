@@ -91,7 +91,7 @@ func (c *Cli) Shell() {
 				continue
 			}
 
-			fmt.Println(response.GetPassword())
+			fmt.Println(response.GetPwd())
 		case DELETE:
 			args := strings.Split(arg, " ")
 			if len(args) != 1 {

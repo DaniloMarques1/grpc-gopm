@@ -53,9 +53,9 @@ func (s *PasswordServer) FindPassword(ctx context.Context, in *pb.FindPasswordRe
 		return nil, err
 	}
 	response := &pb.PasswordResponse{
-		Id:       password.Id,
-		Key:      password.Key,
-		Password: password.Pwd,
+		Id:  password.Id,
+		Key: password.Key,
+		Pwd: password.Pwd,
 	}
 
 	return response, nil
